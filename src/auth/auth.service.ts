@@ -36,4 +36,13 @@ export class AuthService {
     });
     return response;
   }
+
+  refresh(dto: { refreshToken: string }) {
+    const token = dto.refreshToken;
+    const decoded = this.jwtService.verify(token);
+    const signPayload = { username: decoded.username, sub: decoded.sub };
+    return {
+      accessToken: this.jwtService.sign(signPayload, { expiresIn: '1h' }),
+    };
+  }
 }

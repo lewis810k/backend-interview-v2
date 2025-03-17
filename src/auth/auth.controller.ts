@@ -12,4 +12,9 @@ export class AuthController {
   async login(@Body() dto: LoginRequestDto): Promise<LoginResponseDto> {
     return this.authService.login(dto);
   }
+
+  @Post('refresh')
+  refresh(@Body() dto: { refreshToken: string }) {
+    return this.authService.refresh(dto);
+  }
 }
