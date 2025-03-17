@@ -1,8 +1,9 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { RegisterUserDto } from './dto/RegisterUserDto';
 import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
+import * as bcrypt from 'bcrypt';
+import { RegisterUserDto } from './dto/register-user.dto';
 
 @Injectable()
 export class UserService {
@@ -12,10 +13,9 @@ export class UserService {
   ) {}
 
   async register(dto: RegisterUserDto) {
+    console.log('dto : ', dto);
     // id 중복체크
-    const user = await this.userRepository.findOne({
-      where: { loginId: dto.loginId },
-    });
+    const user = await this.findOneByLoginId(dto.loginId);
     if (!!user) {
       throw new BadRequestException('중복');
     }
@@ -25,7 +25,11 @@ export class UserService {
     newUser.loginId = dto.loginId;
     newUser.userName = dto.userName;
     newUser.email = dto.email;
-    newUser.password = dto.password; // TODO: hash
+    newUser.password = await bcrypt.hash(dto.password, 10); // TODO: hash
     return this.userRepository.save(newUser);
+  }
+
+  async findOneByLoginId(loginId: string): Promise<User | undefined> {
+    return this.userRepository.findOne({ where: { loginId } });
   }
 }
