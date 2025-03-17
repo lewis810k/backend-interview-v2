@@ -1,10 +1,23 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateProductRequestDto } from './dto/create-product-request.dto';
 import { Product } from '../../libs/entities/product.entity';
-import { Repository } from 'typeorm';
+import {
+  Between,
+  FindConditions,
+  IsNull,
+  LessThanOrEqual,
+  MoreThanOrEqual,
+  Repository,
+} from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UpdateProductRequestDto } from './dto/update-product-request.dto';
 import { ProductResponseDto } from './dto/product-response.dto';
+import { SearchProductRequestDto } from './dto/search-product-request.dto';
+import { IListResponse } from '../../libs/interfaces/IListResponse';
+import {
+  findPagination,
+  responsePagination,
+} from '../../libs/helpers/common.helper';
 
 @Injectable()
 export class ProductService {
@@ -34,6 +47,56 @@ export class ProductService {
   async delete(id: number): Promise<void> {
     const product = await this.findOneOrFail(id);
     await this.productRepository.delete(product.id);
+  }
+
+  async get(id: number): Promise<ProductResponseDto> {
+    return this.findOneOrFail(id);
+  }
+
+  async search(
+    query: SearchProductRequestDto,
+  ): Promise<IListResponse<ProductResponseDto>> {
+    const [list, total] = await this.productRepository.findAndCount({
+      where: {
+        ...getTerms(query),
+      },
+      ...findPagination(query),
+    });
+
+    const pagination = responsePagination(total, list.length, query);
+    return { list, ...pagination };
+
+    function getTerms(query: SearchProductRequestDto): FindConditions<Product> {
+      const { productName, brand, minPrice, maxPrice, productSize, color } =
+        query;
+      const where: FindConditions<Product> = {};
+
+      if (productName) {
+        where.productName = productName;
+      }
+
+      if (brand) {
+        where.brand = brand;
+      }
+
+      if (productSize) {
+        where.size = productSize;
+      }
+
+      if (color) {
+        where.color = color;
+      }
+
+      if (!!minPrice) {
+        where.price = MoreThanOrEqual(minPrice);
+      }
+
+      if (!!maxPrice) {
+        where.price = LessThanOrEqual(maxPrice);
+      }
+
+      return where;
+    }
   }
 
   async findOneOrFail(id: number): Promise<Product> {

@@ -7,6 +7,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { CreateProductRequestDto } from './dto/create-product-request.dto';
@@ -15,6 +16,8 @@ import { Product } from '../../libs/entities/product.entity';
 import { AuthGuard } from '../../libs/guards/auth.guard';
 import { ProductResponseDto } from './dto/product-response.dto';
 import { UpdateProductRequestDto } from './dto/update-product-request.dto';
+import { SearchProductRequestDto } from './dto/search-product-request.dto';
+import { IListResponse } from '../../libs/interfaces/IListResponse';
 
 @UseGuards(AuthGuard)
 @Controller('products')
@@ -43,12 +46,14 @@ export class ProductController {
   }
 
   @Get(':id')
-  async getOne() {
-    throw new BadRequestException('to be implemented');
+  async getOne(@Param('id') id: number): Promise<ProductResponseDto> {
+    return this.productService.get(id);
   }
 
   @Get()
-  async search() {
-    throw new BadRequestException('to be implemented');
+  async search(
+    @Query() query: SearchProductRequestDto,
+  ): Promise<IListResponse<ProductResponseDto>> {
+    return this.productService.search(query);
   }
 }
