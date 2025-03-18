@@ -11,7 +11,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { UpdateProductRequestDto } from './dto/update-product-request.dto';
 import { ProductResponseDto } from './dto/product-response.dto';
 import { SearchProductRequestDto } from './dto/search-product-request.dto';
-import { IListResponse } from '../../libs/interfaces/common.response';
+import { IListResponse } from '../../libs/interfaces/response.interface';
 import {
   findPagination,
   responsePagination,

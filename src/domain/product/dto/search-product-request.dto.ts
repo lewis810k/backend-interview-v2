@@ -1,10 +1,4 @@
-import {
-  IsEnum,
-  IsNumber,
-  IsOptional,
-  IsPositive,
-  IsString,
-} from 'class-validator';
+import { IsNumber, IsOptional, IsPositive, IsString } from 'class-validator';
 import { PaginationQuery } from '../../../libs/dto/pagination.query';
 
 export class SearchProductRequestDto extends PaginationQuery {
@@ -35,6 +29,6 @@ export class SearchProductRequestDto extends PaginationQuery {
   readonly color?: string;
 
   @IsOptional()
-  @IsEnum(['id', 'productName', 'price'])
-  readonly sortBy?: 'id' | 'productName' | 'price';
+  @IsString()
+  readonly sortBy?: string; // price-desc, id-asc 형식으로 사용
 }

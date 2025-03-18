@@ -1,4 +1,4 @@
-import { IsBoolean, IsNumber, IsString } from 'class-validator';
+import { IsBoolean, IsEnum, IsNumber, IsString } from 'class-validator';
 
 export class UpdateFavoriteRequestDto {
   token: string;
@@ -7,6 +7,7 @@ export class UpdateFavoriteRequestDto {
   readonly isFavorite: boolean;
 
   @IsString()
+  @IsEnum(['PRODUCT'])
   readonly targetType: string;
 
   @IsNumber()

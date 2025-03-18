@@ -9,7 +9,7 @@ export function findPagination(query: {
 
   const order = listSort.reduce((acc, cur) => {
     const [column, ordering] = cur.split('-');
-    acc[column] = ordering;
+    acc[column] = ordering.toUpperCase();
     return acc;
   }, {});
 

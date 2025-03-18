@@ -7,3 +7,8 @@ export interface IListResponse<T> {
   page: number;
   size: number;
 }
+
+export interface IResponseBody<T> {
+  msg: string;
+  data?: T;
+}
