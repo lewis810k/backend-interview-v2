@@ -1,5 +1,6 @@
-import { Injectable } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { JsonWebTokenError, JwtService } from '@nestjs/jwt';
+import { User } from '../../libs/entities/user.entity';
 
 @Injectable()
 export class AuthService {
@@ -14,12 +15,16 @@ export class AuthService {
     };
   }
 
-  verify(token: string) {
-    const decoded = this.jwtService.verify(token);
-    return decoded.user;
+  verify(token: string): User {
+    try {
+      const decoded = this.jwtService.verify(token);
+      return decoded.user as User;
+    } catch (e) {
+      throw new UnauthorizedException('권한이 없습니다.');
+    }
   }
 
-  async createToken(payload: any, expiresIn: string) {
+  async createToken(payload: any, expiresIn: string): Promise<string> {
     return this.jwtService.signAsync(payload, {
       expiresIn,
     });
