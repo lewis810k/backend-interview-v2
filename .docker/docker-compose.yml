@@ -1,0 +1,23 @@
+version: "3"
+
+services:
+  db:
+    image: mysql:8
+    platform: linux/amd64
+    container_name: temp_db
+    restart: always
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: mydatabase
+      LANG: C.UTF_8
+#      TZ: Asia/Seoul
+    command:
+      - "--character-set-server=utf8mb4"
+      - "--collation-server=utf8mb4_unicode_ci"
+      - "--default-time-zone=Asia/Seoul"
+      - "--sql_mode=IGNORE_SPACE,STRICT_TRANS_TABLES"
+    volumes:
+      - ./setup.sql:/docker-entrypoint-initdb.d/setup.sql
+      - ./db:/var/lib/mysql
