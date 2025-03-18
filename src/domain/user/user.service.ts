@@ -63,4 +63,27 @@ export class UserService {
   async findOneByLoginId(loginId: string): Promise<User | undefined> {
     return this.userRepository.findOne({ where: { loginId } });
   }
+
+  async updateFavorite(dto: UpdateFavoriteRequestDto): Promise<void> {
+    const { token, like, targetType, targetId } = dto;
+    // token 에서 회원정보 조회
+    const user = this.authService.verify(token);
+
+    const userFavorite = await this.userFavoriteRepository.findOne({
+      where: { userId: user.id, targetType, targetId },
+    });
+
+    if (like && !userFavorite) {
+      await this.userFavoriteRepository.save({
+        userId: user.id,
+        targetType,
+        targetId,
+      });
+    } else if (!like && userFavorite) {
+      await this.userFavoriteRepository.delete(userFavorite.id);
+    }
+    // 그 외 경우는 아무 동작 하지 않아도 됨
+    //  - unlike && userFavorite 가 없는 경우
+    //  - like && userFavorite 가 있는 경우
+  }
 }

@@ -7,6 +7,7 @@ import { User } from './libs/entities/user.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ProductModule } from './domain/product/product.module';
 import { Product } from './libs/entities/product.entity';
+import { UserFavorite } from './libs/entities/user-favorite.entity';
 
 @Module({
   imports: [
@@ -17,7 +18,7 @@ import { Product } from './libs/entities/product.entity';
       username: 'root',
       password: 'root',
       database: 'mydatabase',
-      entities: [User, Product],
+      entities: [User, Product, UserFavorite],
       synchronize: false,
       logging: true,
     }),
