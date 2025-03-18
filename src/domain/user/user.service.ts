@@ -44,11 +44,10 @@ export class UserService {
   }
 
   async register(dto: RegisterUserDto) {
-    console.log('dto : ', dto);
     // id 중복체크
     const user = await this.findOneByLoginId(dto.loginId);
     if (!!user) {
-      throw new BadRequestException('중복');
+      throw new BadRequestException('이미 존재하는 ID 입니다.');
     }
 
     // 계정 생성

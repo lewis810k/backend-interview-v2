@@ -15,11 +15,13 @@ export class UserController {
     return this.userService.login(dto);
   }
 
+  // 회원가입 API
   @Post('register')
   async register(@Body() dto: RegisterUserDto) {
     return this.userService.register(dto);
   }
 
+  // 좋아요 등록/취소 API
   @Post('favorite')
   async updateFavorite(
     @UserToken() token: string,

@@ -1,5 +1,5 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { JsonWebTokenError, JwtService } from '@nestjs/jwt';
+import { JwtService } from '@nestjs/jwt';
 import { User } from '../../libs/entities/user.entity';
 
 @Injectable()
