@@ -65,7 +65,7 @@ export class UserService {
   }
 
   async updateFavorite(dto: UpdateFavoriteRequestDto): Promise<void> {
-    const { token, like, targetType, targetId } = dto;
+    const { token, isFavorite, targetType, targetId } = dto;
     // token 에서 회원정보 조회
     const user = this.authService.verify(token);
 
@@ -73,13 +73,13 @@ export class UserService {
       where: { userId: user.id, targetType, targetId },
     });
 
-    if (like && !userFavorite) {
+    if (isFavorite && !userFavorite) {
       await this.userFavoriteRepository.save({
         userId: user.id,
         targetType,
         targetId,
       });
-    } else if (!like && userFavorite) {
+    } else if (!isFavorite && userFavorite) {
       await this.userFavoriteRepository.delete(userFavorite.id);
     }
     // 그 외 경우는 아무 동작 하지 않아도 됨

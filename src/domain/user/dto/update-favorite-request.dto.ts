@@ -4,7 +4,7 @@ export class UpdateFavoriteRequestDto {
   token: string;
 
   @IsBoolean()
-  readonly like: boolean;
+  readonly isFavorite: boolean;
 
   @IsString()
   readonly targetType: string;

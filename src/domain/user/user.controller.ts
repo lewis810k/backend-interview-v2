@@ -20,9 +20,9 @@ export class UserController {
     return this.userService.register(dto);
   }
 
-  @Post()
+  @Post('favorite')
   async updateFavorite(
-    @UserToken() token,
+    @UserToken() token: string,
     @Body() dto: UpdateFavoriteRequestDto,
   ) {
     dto.token = token;
