@@ -1,5 +1,4 @@
 import {
-  BadRequestException,
   Body,
   Controller,
   Delete,
@@ -12,12 +11,11 @@ import {
 } from '@nestjs/common';
 import { CreateProductRequestDto } from './dto/create-product-request.dto';
 import { ProductService } from './product.service';
-import { Product } from '../../libs/entities/product.entity';
 import { AuthGuard } from '../../libs/guards/auth.guard';
 import { ProductResponseDto } from './dto/product-response.dto';
 import { UpdateProductRequestDto } from './dto/update-product-request.dto';
 import { SearchProductRequestDto } from './dto/search-product-request.dto';
-import { IListResponse } from '../../libs/interfaces/IListResponse';
+import { IListResponse } from '../../libs/interfaces/common.response';
 
 @UseGuards(AuthGuard)
 @Controller('products')

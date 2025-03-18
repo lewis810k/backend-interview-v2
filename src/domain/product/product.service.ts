@@ -2,9 +2,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateProductRequestDto } from './dto/create-product-request.dto';
 import { Product } from '../../libs/entities/product.entity';
 import {
-  Between,
   FindConditions,
-  IsNull,
   LessThanOrEqual,
   MoreThanOrEqual,
   Repository,
@@ -13,11 +11,11 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { UpdateProductRequestDto } from './dto/update-product-request.dto';
 import { ProductResponseDto } from './dto/product-response.dto';
 import { SearchProductRequestDto } from './dto/search-product-request.dto';
-import { IListResponse } from '../../libs/interfaces/IListResponse';
+import { IListResponse } from '../../libs/interfaces/common.response';
 import {
   findPagination,
   responsePagination,
-} from '../../libs/helpers/common.helper';
+} from '../../libs/helpers/pagination.helper';
 
 @Injectable()
 export class ProductService {
