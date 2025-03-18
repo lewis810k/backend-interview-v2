@@ -27,3 +27,16 @@
 ## 문의 사항
 
 - 과제를 수행하며 궁금한 점이 생기시면 hoseung.choi@fetching.co.kr로 문의해주세요
+
+## 실행방법
+```angular2html
+// 의존성 설치
+npm install
+
+// 로컬 DB 세팅
+cd .docker
+docker-compose up -d
+
+// 서버 구동
+npm run start
+```
